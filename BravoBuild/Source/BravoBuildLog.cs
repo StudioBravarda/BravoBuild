@@ -38,7 +38,7 @@ public class BravoBuildLog : SerializedScriptableObject
         if (BuildLog == null) BuildLog = new List<BuildInformation>();
 
         BuildLog.Add(new BuildInformation(path, time, version));
-        Debug.Log($"Build log added {version} @{time.ToShortDateString()}");
+        Debug.Log($"Build log added {version} @{time.ToString("G")}");
         EditorUtility.SetDirty(this);
     }
 
