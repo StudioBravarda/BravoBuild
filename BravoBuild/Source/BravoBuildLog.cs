@@ -39,6 +39,7 @@ public class BravoBuildLog : SerializedScriptableObject
 
         BuildLog.Add(new BuildInformation(path, time, version));
         Debug.Log($"Build log added {version} @{time.ToShortDateString()}");
+        EditorUtility.SetDirty(this);
     }
 
     public IEnumerable<string> GetListVersions()

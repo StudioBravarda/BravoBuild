@@ -24,8 +24,6 @@ public class BravoBuild : OdinMenuEditorWindow, IPreprocessBuildWithReport
     public static void OpenWindow()
     {
         BravoBuild window = GetWindow<BravoBuild>();
-        string buildLogGUID = AssetDatabase.FindAssets("t:BravoBuildLog")[0];
-        buildLog = AssetDatabase.LoadAssetAtPath<BravoBuildLog>(AssetDatabase.GUIDToAssetPath(buildLogGUID));
         window.Show();
     }
 
@@ -81,10 +79,7 @@ public class BravoBuild : OdinMenuEditorWindow, IPreprocessBuildWithReport
         {
             //TODO Open directory
             BravoBuild window = GetWindow<BravoBuild>();
-            if (window == null) Debug.Log("Window null");
-            if (BravoBuild.buildLog == null) Debug.Log("build log null");
-            if (report == null) Debug.Log("report log null");
-            BravoBuild.buildLog.AddBuildLog(report.summary.outputPath, DateTime.Now, version);
+            BravoBuildLog.Instance.AddBuildLog(report.summary.outputPath, DateTime.Now, version);
         }
         else
         {

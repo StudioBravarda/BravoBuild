@@ -20,24 +20,26 @@ public class BuildInformation
 
 
     [HideInInspector, OdinSerialize]
-    public DateTime Date;
-
-    [ReadOnly]
-    [LabelText("Date"), ShowInInspector]
-    public string DateString
+    public DateTime Date
     {
         get
         {
-            return Date.ToShortDateString();
+            return DateTime.Parse(DateString);
         }
     }
+
+    [ReadOnly]
+    [LabelText("Date"), ShowInInspector]
+    public string DateString;
+
+
     [ReadOnly]
     public string Version;
 
     public BuildInformation(string path, DateTime date, string version)
     {
         Path = path;
-        Date = date;
+        DateString = date.ToShortDateString();
         Version = version;
     }
 
