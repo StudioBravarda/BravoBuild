@@ -1,4 +1,5 @@
 VdfFiles/*
 SteamSettings/*
-
-*.meta
+SteamSettings/*.asset
+ItchSettings/*.asset
+ItchSettings/*.meta

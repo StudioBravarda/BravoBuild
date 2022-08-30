@@ -8,65 +8,72 @@ using UnityEngine;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
-//TODO Size
-//TODO Was published ? 
-[System.Serializable]
-public class BuildInformation
+namespace BravoBuild.Source
 {
-    [GUIColor("@BravoBuildUtils.VerifyFileExists(Path)")]
-
-    [ReadOnly]
-    public string Path;
-
-
-    [HideInInspector, OdinSerialize]
-    public DateTime Date
+    //TODO Size
+    [System.Serializable]
+    public class BuildInformation
     {
-        get
+        [GUIColor("@BravoBuildUtils.VerifyFileExists(Path)")]
+
+        [ReadOnly]
+        public string Path;
+
+
+        [HideInInspector, OdinSerialize]
+        public DateTime Date
         {
-            return DateTime.Parse(DateString);
+            get
+            {
+                return DateTime.Parse(DateString);
+            }
         }
-    }
 
-    [ReadOnly]
-    [LabelText("Date"), ShowInInspector]
-    public string DateString;
+        [ReadOnly]
+        [LabelText("Date"), ShowInInspector]
+        public string DateString;
+        public float Size;
 
+        [ReadOnly]
+        public BuildType BuildType;
 
-    [ReadOnly]
-    public string Version;
+        [ReadOnly]
+        public string Version;
 
-    public BuildInformation(string path, DateTime date, string version)
-    {
-        Path = path;
-        DateString = date.ToShortDateString();
-        Version = version;
-    }
+        public BuildInformation(string path, DateTime date, string version, BuildType buildType, float size)
+        {
+            Path = path;
+            DateString = date.ToString("G");
+            Version = version;
+            BuildType = buildType;
+            Size = size;
+        }
 
-    public bool CheckPath()
-    {
-        return File.Exists(Path);
-    }
+        public bool CheckPath()
+        {
+            return File.Exists(Path);
+        }
 
-    [ShowIfGroup("ButtonGroup", Condition = "@CheckPath()")]
-    [ButtonGroup("ButtonGroup/Buttons")]
-    [Button]
-    public void OpenFolder()
-    {        
-        Process.Start(@$"{GetFolderPath()}");
-    }
+        [ShowIfGroup("ButtonGroup", Condition = "@CheckPath()")]
+        [ButtonGroup("ButtonGroup/Buttons")]
+        [Button]
+        public void OpenFolder()
+        {
+            Process.Start(@$"{GetFolderPath()}");
+        }
 
-    [ButtonGroup("ButtonGroup/Buttons")]
-    [Button]
-    public void PlayBuild()
-    {
-        Process.Start(@$"{Path}");
-    }
+        [ButtonGroup("ButtonGroup/Buttons")]
+        [Button]
+        public void PlayBuild()
+        {
+            Process.Start(@$"{Path}");
+        }
 
-    public string GetFolderPath()
-    {
-        int pos = Path.LastIndexOf('/');
-        string folderPath = Path.Substring(0, pos);
-        return folderPath;
+        public string GetFolderPath()
+        {
+            int pos = Path.LastIndexOf('/');
+            string folderPath = Path.Substring(0, pos);
+            return folderPath;
+        }
     }
 }

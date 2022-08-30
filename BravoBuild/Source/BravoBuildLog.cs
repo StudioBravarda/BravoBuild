@@ -11,54 +11,57 @@ using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
 
-[InlineEditor, ReadOnly]
-public class BravoBuildLog : SerializedScriptableObject
+namespace BravoBuild.Source
 {
-    public static BravoBuildLog Instance 
+    [InlineEditor, ReadOnly]
+    public class BravoBuildLog : SerializedScriptableObject
     {
-        get
+        public static BravoBuildLog Instance
         {
-            return AssetDatabase.LoadAssetAtPath<BravoBuildLog>("Assets/Plugins/BravoBuild/BuildLog.asset");
+            get
+            {
+                return AssetDatabase.LoadAssetAtPath<BravoBuildLog>("Assets/Plugins/BravoBuild/BuildLog.asset");
+            }
         }
-    }
-    public List<BuildInformation> BuildLog = new List<BuildInformation>();
+        public List<BuildInformation> BuildLog = new List<BuildInformation>();
 
-    public string GetLastBuildPath()
-    {
-        if (BuildLog.Count == 0)
+        public string GetLastBuildPath()
         {
-            Debug.LogError("This current build log is empty");
-            return "";
+            if (BuildLog.Count == 0)
+            {
+                Debug.LogError("This current build log is empty");
+                return "";
+            }
+            else return BuildLog.Last().Path;
         }
-        else return BuildLog.Last().Path;
-    }
 
-    public void AddBuildLog(string path, DateTime time, string version)
-    {
-        if (BuildLog == null) BuildLog = new List<BuildInformation>();
-
-        BuildLog.Add(new BuildInformation(path, time, version));
-        Debug.Log($"Build log added {version} @{time.ToString("G")}");
-        EditorUtility.SetDirty(this);
-    }
-
-    public IEnumerable<string> GetListVersions()
-    {
-        List<string> newList = new List<string>();
-        foreach (var log in BuildLog)
+        public void AddBuildLog(string path, DateTime time, string version, BuildType type, float size)
         {
-            newList.Add(log.Version);
-        }
-        return newList;
-    }
+            if (BuildLog == null) BuildLog = new List<BuildInformation>();
 
-    public BuildInformation GetBuildWithVersion(string versionString)
-    {
-        foreach (BuildInformation buildInfo in BuildLog)
-        {
-            if(buildInfo.Version == versionString) return buildInfo;
+            BuildLog.Add(new BuildInformation(path, time, version, type, size));
+            Debug.Log($"Build log added {version} @{time.ToString("G")}");
+            EditorUtility.SetDirty(this);
         }
-        return null;
+
+        public IEnumerable<string> GetListVersions()
+        {
+            List<string> newList = new List<string>();
+            foreach (var log in BuildLog)
+            {
+                if (log.CheckPath()) newList.Add(log.Version);
+            }
+            return newList;
+        }
+
+        public BuildInformation GetBuildWithVersion(string versionString)
+        {
+            foreach (BuildInformation buildInfo in BuildLog)
+            {
+                if (buildInfo.Version == versionString) return buildInfo;
+            }
+            return null;
+        }
     }
 }
 #endif

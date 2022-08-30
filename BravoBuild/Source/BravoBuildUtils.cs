@@ -2,10 +2,20 @@ using System;
 using System.IO;
 using UnityEngine;
 
-public static class BravoBuildUtils
+namespace BravoBuild
 {
-    private static Color VerifyFileExists(string path)
+    public static class BravoBuildUtils
     {
-        return File.Exists(path) ? Color.green : Color.red;
+        private static Color VerifyFileExists(string path)
+        {
+            return File.Exists(path) ? Color.green : Color.red;
+        }
+
+        //TODO Remove this to from this class
+        public static string ToFriendlyString(Enum code)
+        {
+            return Enum.GetName(code.GetType(), code);
+        }
     }
+
 }
