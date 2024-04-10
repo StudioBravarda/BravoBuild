@@ -1,6 +1,6 @@
 # BravoBuild
 
-This repository houses a comprehensive build solution for Unity, build to streamline development processes for our team at Bravarda. 
+This repository houses a comprehensive build solution for Unity, build to streamline development processes for our team at Studio Bravarda. 
 We understand that there are numerous build solutions available for Unity, but our approach addresses specific needs and objectives unique to our project.
 If you share any of the key objectives in your own project, feel free to use it and propose changes as well.
 
